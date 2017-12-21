@@ -5,7 +5,7 @@ import { View, Text, StyleSheet, TouchableNativeFeedback } from 'react-native';
 const ListItem = (props) => (
     <TouchableNativeFeedback onPress={props.handlePressedItem} >
         <View style={styles.listItem} >
-            <Text>{props.placeName.value}</Text>
+            <Text>{props.placeName}</Text>
         </View>
     </TouchableNativeFeedback>
 );
