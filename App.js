@@ -1,12 +1,10 @@
 import React from 'react';
-import {StyleSheet, View, TextInput, Button} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 
-import ListItem from './src/components/ListItem/ListItem';
 import PlaceInput from './src/components/PlaceInput/PlaceInput';
 import PlaceList from "./src/components/PlaceList/PlaceList";
 
 export default class App extends React.Component {
-
 
     constructor(props) {
         super(props);
@@ -29,9 +27,26 @@ export default class App extends React.Component {
 
         this.setState(prevState => {
             return {
-                places: prevState.places.concat(prevState.placeName)
+                places: prevState.places.concat({
+                    key: Math.random(),
+                    value: this.state.placeName
+                })
             }
         });
+    };
+
+    placeDeletedHandler = (key) => {
+        this.setState(
+            (prevState) => {
+                return {
+                    places: prevState.places.filter(
+                        (place) => {
+                            return place.key !== key;
+                        }
+                    )
+                };
+            }
+        );
     };
 
     render() {
@@ -44,10 +59,12 @@ export default class App extends React.Component {
                     handleButtonPress={this.placeSubmitHandler}
                     placeholderText="Type here..."
                     buttonText="Add"
+
                 />
 
                 <PlaceList
                     places={this.state.places}
+                    handlePressed={this.placeDeletedHandler}
                 />
 
             </View>

@@ -1,5 +1,6 @@
 import React from 'react';
-import {StyleSheet, View, TextInput, Button} from 'react-native';
+import PropTypes from 'prop-types';
+import {StyleSheet, FlatList} from 'react-native';
 
 import ListItem from '../ListItem/ListItem';
 
@@ -10,13 +11,30 @@ const styles = StyleSheet.create({
 });
 
 export default class PlaceList extends React.Component {
-    render(){
-        const placesOutput = this.props.places.map(
-            (place, position) => {
-                return <ListItem key={position} placeName={place} />;
-            }
-        );
+    render() {
 
-        return (placesOutput);
+        return (
+            <FlatList
+                style={styles.placesView}
+                data={this.props.places}
+                renderItem={(info) => (
+                    <ListItem
+                        placeName={info.item.value}
+                        handlePressedItem={
+                            () => this.props.handlePressed(info.item.key)
+                        }
+                    />
+                )
+                }
+
+            />
+        )
+            ;
     }
 }
+
+PlaceList.propTypes = {
+    handlePressed: PropTypes.func,
+    places: PropTypes.array,
+
+};

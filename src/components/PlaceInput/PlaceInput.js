@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {StyleSheet, View, TextInput, Button} from 'react-native';
 
 const styles = StyleSheet.create({
@@ -36,3 +37,10 @@ export default class PlaceInput extends React.Component {
         );
     }
 }
+
+PlaceInput.propTypes = {
+    placeName: PropTypes.string,
+    placeholderText: PropTypes.string,
+    handleTextChange: PropTypes.func,
+    handleButtonPress: PropTypes.func
+};
