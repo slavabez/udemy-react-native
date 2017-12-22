@@ -1,22 +1,15 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
+import { connect } from 'react-redux';
 
 import PlaceInput from './components/PlaceInput/PlaceInput';
 import PlaceList from "./components/PlaceList/PlaceList";
 import PlaceDetail from './components/PlaceDetail/PlaceDetail';
+import { addPlace, deletePlace, selectPlace, deselectPlace } from './store/actions';
 
 import placeImage from './assets/london.png';
 
-export default class App extends React.Component {
-
-    constructor(props) {
-        super(props);
-        this.state = {
-            placeName: '',
-            places: [],
-            selectedPlace: null
-        };
-    }
+class App extends React.Component {
 
     placeNameHandler = (value) => {
         this.setState({
@@ -25,21 +18,7 @@ export default class App extends React.Component {
     };
 
     placeSubmitHandler = () => {
-        if (this.state.placeName.trim() === ''){
-            return;
-        }
-
-        this.setState(prevState => {
-            return {
-                places: prevState.places.concat({
-                    key: Math.random(),
-                    name: this.state.placeName,
-                    image: {
-                        uri: 'https://london.ac.uk/sites/default/files/styles/promo_mobile/public/2017-08/Study%20in%20london.png?itok=cVAL8iOT'
-                    }
-                })
-            }
-        });
+        this.props.onAddPlace();
     };
 
     placeSelectedHandler = (key) => {
@@ -112,3 +91,21 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start',
     }
 });
+
+const mapStateToProps = state => {
+    return {
+        places: state.places.places,
+        selectedPlace: state.places.selectedPlace
+    };
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+        onAddPlace: (name) => dispatch(addPlace(name)),
+        onDeletePlace: () => dispatch(deletePlace()),
+        onSelectPlace: (key) => dispatch(selectPlace(key)),
+        onDeselectPlace: () => dispatch(deselectPlace())
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
