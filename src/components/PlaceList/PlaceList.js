@@ -19,7 +19,8 @@ export default class PlaceList extends React.Component {
                 data={this.props.places}
                 renderItem={(info) => (
                     <ListItem
-                        placeName={info.item.value}
+                        placeName={info.item.name}
+                        imgSrc={info.item.image}
                         handlePressedItem={
                             () => this.props.handlePressed(info.item.key)
                         }
