@@ -3,8 +3,9 @@ import {StyleSheet, View} from 'react-native';
 
 import PlaceInput from './components/PlaceInput/PlaceInput';
 import PlaceList from "./components/PlaceList/PlaceList";
+import PlaceDetail from './components/PlaceDetail/PlaceDetail';
 
-import placeImage from './assets/background.jpg';
+import placeImage from './assets/london.png';
 
 export default class App extends React.Component {
 
@@ -12,7 +13,8 @@ export default class App extends React.Component {
         super(props);
         this.state = {
             placeName: '',
-            places: []
+            places: [],
+            selectedPlace: null
         };
     }
 
@@ -32,19 +34,21 @@ export default class App extends React.Component {
                 places: prevState.places.concat({
                     key: Math.random(),
                     name: this.state.placeName,
-                    image: placeImage
+                    image: {
+                        uri: 'https://london.ac.uk/sites/default/files/styles/promo_mobile/public/2017-08/Study%20in%20london.png?itok=cVAL8iOT'
+                    }
                 })
             }
         });
     };
 
-    placeDeletedHandler = (key) => {
+    placeSelectedHandler = (key) => {
         this.setState(
             (prevState) => {
                 return {
-                    places: prevState.places.filter(
+                    selectedPlace: prevState.places.find(
                         (place) => {
-                            return place.key !== key;
+                            return place.key === key;
                         }
                     )
                 };
@@ -52,10 +56,34 @@ export default class App extends React.Component {
         );
     };
 
+    placeDeletedHandler = () => {
+        this.setState(
+            (prevState) => {
+                return {
+                    places: prevState.places.filter(
+                        (place) => {
+                            return place.key !== prevState.selectedPlace.key;
+                        }
+                    ),
+                    selectedPlace: null
+                };
+            }
+        );
+    };
+
+    modalClosedHandler = () => {
+        this.setState({ selectedPlace: null });
+    };
+
     render() {
 
         return (
             <View style={styles.container}>
+                <PlaceDetail
+                    selectedPlace={this.state.selectedPlace}
+                    onItemDeleted={this.placeDeletedHandler}
+                    onModalClose={this.modalClosedHandler}
+                />
                 <PlaceInput
                     placeName={this.state.placeName}
                     handleTextChange={this.placeNameHandler}
@@ -67,7 +95,7 @@ export default class App extends React.Component {
 
                 <PlaceList
                     places={this.state.places}
-                    handlePressed={this.placeDeletedHandler}
+                    handlePressed={this.placeSelectedHandler}
                 />
 
             </View>

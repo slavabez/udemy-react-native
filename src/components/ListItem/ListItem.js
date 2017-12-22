@@ -5,7 +5,7 @@ import {View, Text, StyleSheet, TouchableNativeFeedback, Image} from 'react-nati
 const ListItem = (props) => (
     <TouchableNativeFeedback onPress={props.handlePressedItem} >
         <View style={styles.listItem} >
-            <Image style={styles.placeImage} source={this.props.imgSrc} />
+            <Image style={styles.placeImage} source={props.imgSrc} resizeMode='cover' />
             <Text>{props.placeName}</Text>
         </View>
     </TouchableNativeFeedback>
@@ -21,14 +21,16 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     placeImage: {
-        marginRight: '8'
+        marginRight: 8,
+        height: 75,
+        width: 75
     }
 });
 
 ListItem.propTypes = {
     placeName: PropTypes.string,
     handlePressedItem: PropTypes.func,
-    imgSrc: PropTypes.string
+    imgSrc: PropTypes.object
 };
 
 export default ListItem;
