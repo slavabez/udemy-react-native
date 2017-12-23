@@ -19,28 +19,45 @@ const styles = StyleSheet.create({
 
 export default class PlaceInput extends React.Component {
 
+    constructor(props) {
+        super(props);
+        this.state = {
+            placeName: ""
+        };
+    }
+
+    placeNameChangeHandler = val => {
+        this.setState({
+            placeName: val
+        });
+    };
+
+    placeSubmitHandler = () => {
+        if (this.state.placeName.trim() === "") {
+            return;
+        }
+        this.props.handleButtonPress(this.state.placeName);
+    };
+
     render(){
         return (
             <View style={styles.headerInput}>
                 <TextInput
                     style={styles.placeInput}
-                    value={this.props.placeName}
-                    onChangeText={this.props.handleTextChange}
-                    placeholder={this.props.placeholderText}
+                    value={this.state.placeName}
+                    onChangeText={this.placeNameChangeHandler}
+                    placeholder="Type a place here..."
                 />
 
                 <Button
                     style={styles.placeButton}
-                    title={this.props.buttonText}
-                    onPress={this.props.handleButtonPress} />
+                    title="Submit"
+                    onPress={this.placeSubmitHandler} />
             </View>
         );
     }
 }
 
 PlaceInput.propTypes = {
-    placeName: PropTypes.string,
-    placeholderText: PropTypes.string,
-    handleTextChange: PropTypes.func,
     handleButtonPress: PropTypes.func
 };

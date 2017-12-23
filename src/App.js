@@ -7,51 +7,22 @@ import PlaceList from "./components/PlaceList/PlaceList";
 import PlaceDetail from './components/PlaceDetail/PlaceDetail';
 import { addPlace, deletePlace, selectPlace, deselectPlace } from './store/actions';
 
-import placeImage from './assets/london.png';
-
 class App extends React.Component {
 
-    placeNameHandler = (value) => {
-        this.setState({
-            placeName: value
-        });
+    placeSubmitHandler = place => {
+        this.props.onAddPlace(place);
     };
 
-    placeSubmitHandler = () => {
-        this.props.onAddPlace();
-    };
-
-    placeSelectedHandler = (key) => {
-        this.setState(
-            (prevState) => {
-                return {
-                    selectedPlace: prevState.places.find(
-                        (place) => {
-                            return place.key === key;
-                        }
-                    )
-                };
-            }
-        );
+    placeSelectedHandler = key => {
+        this.props.onSelectPlace(key);
     };
 
     placeDeletedHandler = () => {
-        this.setState(
-            (prevState) => {
-                return {
-                    places: prevState.places.filter(
-                        (place) => {
-                            return place.key !== prevState.selectedPlace.key;
-                        }
-                    ),
-                    selectedPlace: null
-                };
-            }
-        );
+        this.props.onDeletePlace();
     };
 
     modalClosedHandler = () => {
-        this.setState({ selectedPlace: null });
+        this.props.onDeselectPlace();
     };
 
     render() {
@@ -59,24 +30,19 @@ class App extends React.Component {
         return (
             <View style={styles.container}>
                 <PlaceDetail
-                    selectedPlace={this.state.selectedPlace}
+                    selectedPlace={this.props.selectedPlace}
                     onItemDeleted={this.placeDeletedHandler}
                     onModalClose={this.modalClosedHandler}
                 />
-                <PlaceInput
-                    placeName={this.state.placeName}
-                    handleTextChange={this.placeNameHandler}
-                    handleButtonPress={this.placeSubmitHandler}
-                    placeholderText="Type here..."
-                    buttonText="Add"
 
+                <PlaceInput
+                    handleButtonPress={this.placeSubmitHandler}
                 />
 
                 <PlaceList
-                    places={this.state.places}
+                    places={this.props.places}
                     handlePressed={this.placeSelectedHandler}
                 />
-
             </View>
         );
     }

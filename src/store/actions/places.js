@@ -3,7 +3,7 @@ import {
     DELETE_PLACE,
     SELECT_PLACE,
     DESELECT_PLACE
-} from 'actionTypes';
+} from './actionTypes';
 
 export const addPlace = (placeName) => {
     return {

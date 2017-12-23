@@ -36,6 +36,5 @@ export default class PlaceList extends React.Component {
 
 PlaceList.propTypes = {
     handlePressed: PropTypes.func,
-    places: PropTypes.array,
-
+    places: PropTypes.array
 };
